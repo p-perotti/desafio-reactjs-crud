@@ -36,7 +36,7 @@ const Dashboard: React.FC = () => {
     food: Omit<IFoodPlate, 'id' | 'available'>,
   ): Promise<void> {
     try {
-      const response = await api.post('foods', food);
+      const response = await api.post('foods', { ...food, available: true });
       setFoods([...foods, response.data]);
     } catch (err) {
       console.log(err);
@@ -47,7 +47,10 @@ const Dashboard: React.FC = () => {
     food: Omit<IFoodPlate, 'id' | 'available'>,
   ): Promise<void> {
     try {
-      const response = await api.put(`foods/${editingFood.id}`, { ...food });
+      const response = await api.put(`foods/${editingFood.id}`, {
+        ...food,
+        available: editingFood.available,
+      });
       setFoods(
         foods.map(foodPlate =>
           foodPlate.id === editingFood.id ? { ...response.data } : foodPlate,
